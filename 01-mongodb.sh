@@ -1,7 +1,7 @@
 #!/bin/bash
 
 user_id=$(id -u)
-logs_folder="/var/log/roboshop-automation"
+logs_folder="/var/log/roboshop"
 # Extract the script name properly for the log file
 script_name=$(basename "$0")
 logs_file="${logs_folder}/${script_name}.log"
