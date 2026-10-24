@@ -69,7 +69,7 @@ echo -e "\n${Y}--- Waiting 5 seconds for application to start... ---${N}"
 sleep 5
 
 # 2. Health Check Endpoint
-echo -e "\n${Y}--- Health Check (http://localhost:8080/health) ---${N}"
+echo -e "\n${Y}--- Health Check (http://localhost/health) ---${N}"
 curl -s http://localhost/health
 echo "" # Add a newline for clean formatting
 
