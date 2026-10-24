@@ -5,7 +5,7 @@ instance_type="t3.micro"
 domain_name="vibelearning.online"
 hosted_zone_id="Z0417239ES8HIRJNPWY7"
 
-for instance in $@
+for instance in "$@"
 do 
     echo "Creating instance: $instance" 
 
@@ -19,4 +19,34 @@ do
     )
 
     echo "$instance ID: $instance_id"
+
+    if [ "$instance" != "frontend" ]; then
+        IP=$(aws ec2 describe-instances --instance-ids $instance_id \
+            --query 'Reservations[].Instances[].PrivateIpAddress' --output text
+        )
+        r53_record_name="$instance.$domain_name"
+    else
+        IP=$(aws ec2 describe-instances --instance-ids $instance_id \
+            --query 'Reservations[].Instances[].PublicIpAddress' --output text
+        )
+        r53_record_name="$domain_name"
+    fi
+
+    echo "Creating Route53 Record: $r53_record_name with IP: $IP"
+
+    aws route53 change-resource-record-sets \
+    --hosted-zone-id $hosted_zone_id \
+    --change-batch '{
+    "Changes": [
+      {
+        "Action": "UPSERT",
+        "ResourceRecordSet": {
+          "Name": "'"$r53_record_name"'",
+          "Type": "A",
+          "TTL": 1,
+          "ResourceRecords": [{"Value": "'"$IP"'"}]
+        }
+      }
+    ]
+  }'
 done
