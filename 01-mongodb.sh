@@ -48,6 +48,10 @@ validate $? "Restarting MongoDB"
 echo -e "\n${Y}--- MongoDB Service Status ---${N}"
 systemctl status mongod --no-pager
 
+# Wait for MongoDB to fully initialize
+echo -e "\n${Y}--- Waiting 5 seconds for MongoDB to open port 27017... ---${N}"
+sleep 5
+
 # Displaying Port Listening Status
 echo -e "\n${Y}--- MongoDB Port (27017) Listening Status ---${N}"
 ss -lntp | grep 27017
