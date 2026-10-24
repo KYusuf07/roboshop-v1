@@ -98,19 +98,6 @@ validate $? "Restarting/Starting shipping"
 echo -e "\n${Y}--- Cart Service Status ---${N}"
 systemctl status shipping --no-pager
 
-# Give the app a few seconds to start up before curling
-echo -e "\n${Y}--- Waiting 5 seconds for application to start... ---${N}"
-sleep 5
-
-# 2. Health Check Endpoint
-echo -e "\n${Y}--- Health Check (http://localhost:8080/health) ---${N}"
-curl -s http://localhost:8080/health
-echo "" # Add a newline for clean formatting
-
-
-# Define Bold/Thick Green (add this to the top of your script with your other colors)
-BG="\e[1;32m"
-
 
 echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
 echo "$(timestamp) [INFO] ==== Script completed Execution =====" | tee -a $logs_file
