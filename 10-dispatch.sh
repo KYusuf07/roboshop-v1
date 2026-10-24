@@ -66,6 +66,10 @@ validate $? "Building Dispatch Application (Go)"
 cp "$scripts_dir/dispatch.service" /etc/systemd/system/dispatch.service
 validate $? "Copying dispatch.service file"
 
+# Replace the DOMAIN_NAME placeholder with your actual domain variable
+sed -i "s/DOMAIN_NAME/$domain_name/g" /etc/systemd/system/dispatch.service
+validate $? "Copying and configuring dispatch.service file"
+
 # Start and Enable Service
 systemctl daemon-reload &>> $logs_file
 systemctl enable dispatch &>> $logs_file
