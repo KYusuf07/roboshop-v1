@@ -10,7 +10,7 @@ do
     echo "Creating instance: $instance" 
 
     instance_id=$(aws ec2 run-instances \
-        --image-id ami-0055977a6e828a4f4 \
+        --image-id $ami_id \
         --instance-type $instance_type \
         --security-groups "MyIP" "MyIP-$instance" \
 	    --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=Myshell-$instance}]" \
