@@ -32,7 +32,6 @@ do
         r53_record_name="$domain_name"
     fi
 
-    echo "Creating Route53 Record: $r53_record_name with IP: $IP"
 
     aws route53 change-resource-record-sets \
     --hosted-zone-id $hosted_zone_id \
@@ -49,4 +48,6 @@ do
       }
     ]
   }'
+
+  echo "updated R53 for $instance
 done
