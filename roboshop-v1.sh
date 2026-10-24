@@ -29,10 +29,11 @@ do
         IP=$(aws ec2 describe-instances --instance-ids $instance_id \
             --query 'Reservations[].Instances[].PublicIpAddress' --output text
         )
-        r53_record_name="${domain_name}"
+        r53_record_name="$domain_name"
     fi
-
     echo "Record: ${r53_record}"
+    echo "Creating Route53 Record: $r53_record_name with IP: $IP"
+
     aws route53 change-resource-record-sets \
     --hosted-zone-id $hosted_zone_id \
     --change-batch '{
@@ -40,15 +41,14 @@ do
       {
         "Action": "UPSERT",
         "ResourceRecordSet": {
-          "Name": "'$r53_record_name'",
+          "Name": "'"$r53_record_name"'",
           "Type": "A",
           "TTL": 1,
-          "ResourceRecords": [{"Value": "'$IP'"}]
+          "ResourceRecords": [{"Value": "'"$IP"'"}]
         }
       }
     ]
   }'
 
   echo "Updated R53 record for $instance"
-
 done
