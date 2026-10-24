@@ -70,7 +70,7 @@ sleep 5
 
 # 2. Health Check Endpoint
 echo -e "\n${Y}--- Health Check (http://localhost:8080/health) ---${N}"
-curl -s http://localhost:8080/health
+curl -s http://localhost/health
 echo "" # Add a newline for clean formatting
 
 
