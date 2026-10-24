@@ -8,4 +8,16 @@ hosted_zone_id="Z0417239ES8HIRJNPWY7"
 for instance in $@
 do 
     echo "Creating instance: $instance" 
+
+    instance_id=$(aws ec2 run-instances \
+        --image-id ami-0220d79f3f480ecf5 \
+        --instance-type $instance_type \
+        --security-groups "MyIP" "MyIP-$instance" \
+	    --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=Myshell-$instance}]" \
+	    --query 'Instances[0].InstanceId' \
+        --output text
+
+    )
+
+    echo "$instance ID: $instance_id"
 done
