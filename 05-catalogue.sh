@@ -106,9 +106,9 @@ echo "" # Add a newline for clean formatting
 STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/health)
 
 if [ "$STATUS_CODE" -eq 200 ]; then
-    echo -e "${G}SUCCESS: Catalogue service is running (Status Code: 200)${N}"
+    echo -e "${G}SUCCESS${N}: Catalogue service is running (Status Code: ${G}200${N})"
 else
-    echo -e "${R}FAILED: Catalogue service is not running (Status Code: $STATUS_CODE)${N}"
+    echo -e "${R}FAILED${N}: Catalogue service is not running (Status Code: ${R}$STATUS_CODE${N})"
     exit 1
 fi
 
