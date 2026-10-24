@@ -32,6 +32,9 @@ validate(){
     fi  
 }
 
+echo "$(timestamp) [INFO] ==== Script started Execution =====" | tee -a $logs_file
+
+
 cp mongo.repo /etc/yum.repos.d/mongo.repo
 validate $? "Adding mongo repo"
 
@@ -59,3 +62,6 @@ sleep 5
 # Displaying Port Listening Status
 echo -e "\n${Y}--- MongoDB Port (27017) Listening Status ---${N}"
 ss -lntp | grep 27017
+
+echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
+echo "$(timestamp) [INFO] ==== Script completed Execution =====" | tee -a $logs_file
