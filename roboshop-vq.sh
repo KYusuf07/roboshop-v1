@@ -5,7 +5,7 @@ instance_type="t3.micro"
 domain_name="vibelearning.online"
 hosted_zone_id="Z0417239ES8HIRJNPWY7"
 
-for instance in $@
+for instance in "$@"
 do 
     echo "Creating instance: $instance" 
 
@@ -13,10 +13,9 @@ do
         --image-id $ami_id \
         --instance-type $instance_type \
         --security-groups "roboshop-common" "roboshop-$instance" \
-	    --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=roboshop-$instance}]" \
-	    --query 'Instances[0].InstanceId' \
+        --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=roboshop-$instance}]" \
+        --query 'Instances[0].InstanceId' \
         --output text
-
     )
 
     echo "$instance ID: $instance_id"
