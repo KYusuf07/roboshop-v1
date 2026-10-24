@@ -73,8 +73,8 @@ systemctl restart cart
 validate $? "Restarting cart"
 
 # 1. Check Service Status
-echo -e "\n${Y}--- User Service Status ---${N}"
-systemctl status User --no-pager
+echo -e "\n${Y}--- Cart Service Status ---${N}"
+systemctl status cart --no-pager
 
 # Give the app a few seconds to start up before curling
 echo -e "\n${Y}--- Waiting 5 seconds for application to start... ---${N}"
