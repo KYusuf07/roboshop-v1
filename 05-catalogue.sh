@@ -92,22 +92,13 @@ validate $? "Restarting Catalogue"
 echo -e "\n${Y}--- Catalogue Service Status ---${N}"
 systemctl status catalogue --no-pager
 
-# 2. Check Recent Logs (last 20 lines)
-echo -e "\n${Y}--- Recent Catalogue Logs ---${N}"
-journalctl -u catalogue -n 20 --no-pager
-
 # Give the app a few seconds to start up before curling
 echo -e "\n${Y}--- Waiting 5 seconds for application to start... ---${N}"
 sleep 5
 
-# 3. Health Check Endpoint
+# 2. Health Check Endpoint
 echo -e "\n${Y}--- Health Check (http://localhost:8080/health) ---${N}"
 curl -s http://localhost:8080/health
-echo "" # Add a newline for clean formatting
-
-# 4. Products Endpoint Check
-echo -e "\n${Y}--- Products List (http://localhost:8080/products) ---${N}"
-curl -s http://localhost:8080/products
 echo "" # Add a newline for clean formatting
 
 echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
