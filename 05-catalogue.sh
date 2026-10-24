@@ -101,5 +101,16 @@ echo -e "\n${Y}--- Health Check (http://localhost:8080/health) ---${N}"
 curl -s http://localhost:8080/health
 echo "" # Add a newline for clean formatting
 
+
+# Get only the HTTP status code and silence the rest of the output
+STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/health)
+
+if [ "$STATUS_CODE" -eq 200 ]; then
+    echo "SUCCESS: Catalogue service is running (Status Code: 200)"
+else
+    echo "FAILED: Catalogue service is not running (Status Code: $STATUS_CODE)"
+    exit 1
+fi
+
 echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
 echo "$(timestamp) [INFO] ==== Script completed Execution =====" | tee -a $logs_file
