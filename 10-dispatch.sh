@@ -2,8 +2,7 @@
 
 user_id=$(id -u)
 logs_folder="/var/log/roboshop"
-script_name=$(basename "$0")
-logs_file="${logs_folder}/${script_name}.log"
+logs_file="${logs_folder}/${0}.log"
 domain_name="vibelearning.online"
 scripts_dir=$(dirname "$(realpath "$0")")
 R="\e[31m"
