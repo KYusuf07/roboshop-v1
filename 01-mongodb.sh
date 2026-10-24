@@ -2,14 +2,16 @@
 
 user_id=$(id -u)
 logs_folder="/var/log/roboshop-automation"
-logs_file="${logs_folder}/${0}.log"
+# Extract the script name properly for the log file
+script_name=$(basename "$0")
+logs_file="${logs_folder}/${script_name}.log"
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 
 if [ $user_id -ne 0 ]; then
-    echo "please run this script with sudo access.."
+    echo -e "${R}Please run this script with sudo access..${N}"
     exit 1
 fi
 
@@ -30,7 +32,7 @@ cp mongo.repo /etc/yum.repos.d/mongo.repo
 validate $? "Adding mongo repo"
 
 dnf install mongodb-org -y &>> $logs_file
-validate $? "Install MongDB"
+validate $? "Install MongoDB"
 
 systemctl enable mongod &>> $logs_file
 systemctl start mongod &>> $logs_file
@@ -41,3 +43,11 @@ validate $? "Updating remote connections to MongoDB"
 
 systemctl restart mongod
 validate $? "Restarting MongoDB"
+
+# Displaying MongoDB Status
+echo -e "\n${Y}--- MongoDB Service Status ---${N}"
+systemctl status mongod --no-pager
+
+# Displaying Port Listening Status
+echo -e "\n${Y}--- MongoDB Port (27017) Listening Status ---${N}"
+ss -lntp | grep 27017
