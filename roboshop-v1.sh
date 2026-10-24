@@ -49,5 +49,4 @@ do
     ]
   }'
 
-  echo "updated R53 for $instance
 done
