@@ -12,7 +12,7 @@ do
     instance_id=$(aws ec2 run-instances \
         --image-id $ami_id \
         --instance-type $instance_type \
-        --security-groups --security-groups "MyIP" "MyIP" "$(case $instance in mongodb) echo MongoDB;; mysql) echo MySQL;; rabbitmq) echo RabbitMQ;; redis) echo Redis;; catalogue) echo Catalogue;; user) echo User;; cart) echo Cart;; shipping) echo Shipping;; payment) echo Payment;; dispatch) echo Dispatch;; frontend) echo Frontend;; *) echo ${instance^};; esac)" \
+        --security-groups --security-groups "MyIP" "MyIP" "$(case $instance in mongodb) echo MongoDB;; mysql) echo MySQL;; rabbitmq) echo RabbitMQ;; redis) echo Redis;; Catalogue) echo Catalogue;; user) echo User;; cart) echo Cart;; shipping) echo Shipping;; payment) echo Payment;; dispatch) echo Dispatch;; frontend) echo Frontend;; *) echo ${instance^};; esac)" \
         --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" \
         --query 'Instances[0].InstanceId' \
         --output text
