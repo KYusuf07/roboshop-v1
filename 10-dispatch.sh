@@ -2,7 +2,8 @@
 
 user_id=$(id -u)
 logs_folder="/var/log/roboshop"
-logs_file="${logs_folder}/${0}.log"
+script_name=$(basename "$0")
+logs_file="${logs_folder}/${script_name}.log"
 domain_name="vibelearning.online"
 scripts_dir=$(dirname "$(realpath "$0")")
 R="\e[31m"
@@ -55,26 +56,34 @@ validate $? "Creating app directory"
 curl -L -o /tmp/dispatch.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/dispatch-v4.zip &>> $logs_file
 validate $? "Downloading dispatch code"
 
-cd /app
-unzip /tmp/dispatch.zip &>> $logs_file
+cd /app || exit
+unzip -o /tmp/dispatch.zip &>> $logs_file
 validate $? "Unzipping dispatch code"
 
 # Build the Go Application
 go build -o dispatch . &>> $logs_file
 validate $? "Building Dispatch Application (Go)"
 
+# Copy SystemD Service File from your scripts directory
 cp "$scripts_dir/dispatch.service" /etc/systemd/system/dispatch.service
 validate $? "Copying dispatch.service file"
 
 # Replace the DOMAIN_NAME placeholder with your actual domain variable
 sed -i "s/DOMAIN_NAME/$domain_name/g" /etc/systemd/system/dispatch.service
-validate $? "Copying and configuring dispatch.service file"
+validate $? "Configuring dispatch.service domain name"
 
 # Start and Enable Service
 systemctl daemon-reload &>> $logs_file
 systemctl enable dispatch &>> $logs_file
-systemctl start dispatch &>> $logs_file
-validate $? "Starting and enabling dispatch"
+systemctl restart dispatch &>> $logs_file
+validate $? "Restarting and enabling dispatch"
+
+echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
+echo "$(timestamp) [INFO] ==== Script completed Execution =====" | tee -a $logs_file
+
+# ==========================================
+# VERIFICATIONS
+# ==========================================
 
 # 1. Check Service Status
 echo -e "\n${Y}--- Dispatch Service Status ---${N}"
@@ -83,7 +92,3 @@ systemctl status dispatch --no-pager
 # 2. Check Recent Logs (last 20 lines)
 echo -e "\n${Y}--- Recent Dispatch Logs ---${N}"
 journalctl -u dispatch -n 20 --no-pager
-
-
-echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
-echo "$(timestamp) [INFO] ==== Script completed Execution =====" | tee -a $logs_file
